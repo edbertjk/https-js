@@ -1,0 +1,27 @@
+{
+  "name": "hoshi-cache",
+  "version": "1.0.0",
+  "description": "smh",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Ritshu/Hoshi-Cache.git"
+  },
+  "author": "Ritshu",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Ritshu/Hoshi-Cache/issues"
+  },
+  "homepage": "https://github.com/Ritshu/Hoshi-Cache#readme",
+  "dependencies": {
+    "exec": "^0.2.1",
+    "express-rate-limit": "^6.7.0",
+    "express-rate-limit-redis": "^0.0.4",
+    "ioredis": "^5.3.1",
+    "rate-limiter-flexible": "^2.4.1"
+  }
+}
