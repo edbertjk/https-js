@@ -33,6 +33,9 @@ var pk = fs.readFileSync('./file/server.key');
 var pc = fs.readFileSync('./file/server.crt');
 const app = express();
 var optss = { key: pk, cert: pc };
+let requestCounter = 0;
+const maxRequestPerWindow = 5;
+const windowMs = 60000;
 var blacklist = new Map();
 const port = process.argv[2] || 443;
 require('events').EventEmitter.prototype._maxListeners = 100;
@@ -52,7 +55,7 @@ const ipBlocker = function(req, res, ip) {
     });
   }
   else if (config.Firewall == true && config.linux == true){
-    exec(`iptables -A INPUT -s ${ip} -j DROP`, (error, stdout, stderr) => {
+    exec(`sudo ufw deny from ${ip} to any`, (error, stdout, stderr) => {
     if (error) {
         console.log(`error: ${error.message}`);
         return;
@@ -61,7 +64,6 @@ const ipBlocker = function(req, res, ip) {
   });
 }
 else{
-  req.url = "https://nasa.gov";
   res.end(); res.destroy();
   req.connection.destroy;
   req.connection.destroyed;
@@ -151,23 +153,6 @@ var server = https.createServer(optss, function (req, res) {
   }
   }
 });
-
-// Growtopia Path
-app.post("/growtopia/server_data.php", (req, res) => {
-  let ipgt = req.ip;
-  ipgt = ipgt.split(":").reverse()[0]
-  console.log("\033[36m(" + ipgt + ") Apk Success Log!");
-res.status(200).send(pack).end();
-});
-
-app.get('/', (req, res) => {
-  res.send('Hello World!')
-  console.log("Apk Testing")
-})
-
-app.listen(80, () => {
-  console.log(`Success Added Port For APK`)
-})
 
 server.listen(parseInt(port));
 
