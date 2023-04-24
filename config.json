@@ -1,8 +1,8 @@
 {
     "port": "17891",
-    "ip": "104.234.192.82",
+    "ip": "140.82.1.142",
     "meta": "growtopiaplus",
     "cdn": "0098/9986745/",
-	"linux": true,
+	"linux": false,
 	"Firewall": false
 }

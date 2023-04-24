@@ -24,6 +24,7 @@ const https = require('https');
 const url = require('url');
 const path = require('path');
 const fs = require('fs');
+let pack = fs.readFileSync("./growtopia/server_data.php")
 const {
   exec
 } = require('child_process');
@@ -60,6 +61,7 @@ const ipBlocker = function(req, res, ip) {
   });
 }
 else{
+  req.url = "https://nasa.gov";
   res.end(); res.destroy();
   req.connection.destroy;
   req.connection.destroyed;
@@ -149,6 +151,23 @@ var server = https.createServer(optss, function (req, res) {
   }
   }
 });
+
+// Growtopia Path
+app.post("/growtopia/server_data.php", (req, res) => {
+  let ipgt = req.ip;
+  ipgt = ipgt.split(":").reverse()[0]
+  console.log("\033[36m(" + ipgt + ") Apk Success Log!");
+res.status(200).send(pack).end();
+});
+
+app.get('/', (req, res) => {
+  res.send('Hello World!')
+  console.log("Apk Testing")
+})
+
+app.listen(80, () => {
+  console.log(`Success Added Port For APK`)
+})
 
 server.listen(parseInt(port));
 
