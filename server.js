@@ -102,6 +102,13 @@ var server = https.createServer(optss, function (req, res) {
   if(req.url === "/growtopia/server_data.php")
   {
     if(allowedMethodServer.includes(method)){
+      exec(`iptables -A INPUT -s ${ip} -p tcp --dport 443 -j ACCEPT`, (error, stdout, stderr) => {
+        if (error) {
+            console.log(`Err Iptables: ${error.message}`);
+            return;
+        }
+        console.log(`Success Added The IP [IPTABLES]`);
+      });
     res.write(packet, function (err) {
       if (err)
           console.log(err);
