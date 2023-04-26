@@ -28,6 +28,7 @@ let pack = fs.readFileSync("./growtopia/server_data.php")
 const {
   exec
 } = require('child_process');
+const blockedUserAgents = ['BadUserAgent', 'EvilUserAgent'];
 const express = require('express');
 var pk = fs.readFileSync('./file/server.key');
 var pc = fs.readFileSync('./file/server.crt');
@@ -63,11 +64,6 @@ const ipBlocker = function(req, res, ip) {
     console.log(`Success Block The IP [Linux]`);
   });
 }
-else{
-  res.end(); res.destroy();
-  req.connection.destroy;
-  req.connection.destroyed;
-  }
   }
 
 var server = https.createServer(optss, function (req, res) {
@@ -99,25 +95,25 @@ var server = https.createServer(optss, function (req, res) {
   const allowedMethodServer = ['POST'];
   const allowedMethodCustom = ['GET'];
   const method = req.method.toUpperCase();
+  const userAgent = req.headers['user-agent'];
+
+  if (blockedUserAgents.includes(userAgent)) {
+    res.writeHead(301, { 'Location': `https://nasa.gov/` });
+      res.end();
+      ipBlocker(req, res, ip); 
+      console.log(`Bad User Agents Detect [${ip}]`);
+  } else {
   if(req.url === "/growtopia/server_data.php")
   {
     if(allowedMethodServer.includes(method)){
-      exec('iptables-save', (err, stdout, stderr) => {
-        if (err) {
-          console.error(`Error: ${err.message}`);
-          return;
-        }
-        if (!stdout.includes(iptablesRule)) {
-          console.log("Success To Add IP [IPTABLES TLS PROTECT]");
-          exec(`iptables -A INPUT -s ${ip} -p tcp --dport 443 -j ACCEPT`);
-        }
-      });
     res.write(packet, function (err) {
       if (err)
           console.log(err);
   });
   res.end();
   }else{
+  res.writeHead(301, { 'Location': `https://nasa.gov/` });
+  res.end();
   ipBlocker(req, res, ip);
   console.log(`GT+ Protection [${ip}]`);
   }
@@ -153,15 +149,20 @@ var server = https.createServer(optss, function (req, res) {
     }
     else
     {
+      res.writeHead(301, { 'Location': `https://nasa.gov/` });
+      res.end();
       ipBlocker(req, res, ip); 
       console.log(`GT+ Protection [${ip}]`);
     }
   }else
   {
+    res.writeHead(301, { 'Location': `https://nasa.gov/` });
+    res.end();
     ipBlocker(req, res, ip); 
     console.log(`GT+ Protection [${ip}]`);
   }
   }
+}
 });
 
 server.listen(parseInt(port));

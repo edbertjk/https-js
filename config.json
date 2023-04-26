@@ -3,6 +3,6 @@
     "ip": "140.82.1.142",
     "meta": "growtopiaplus",
     "cdn": "0098/9986745/",
-	"linux": false,
-	"Firewall": false
+	"linux": true,
+	"Firewall": true
 }
